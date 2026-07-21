@@ -101,7 +101,7 @@ export default function Register() {
                     ))}
                   </div>
                 </div>
-                <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? t('common.loading') : t('auth.register.button')}</button>
+                <button type="submit" disabled={loading || rateLimitWait > 0} className="btn-primary w-full">{loading ? t('common.loading') : rateLimitWait > 0 ? `${t('auth.wait')} ${rateLimitWait}s` : t('auth.register.button')}</button>
               </form>
               <p className="text-center text-sm text-neutral-600 mt-6">{t('auth.have_account')} <Link to="/login" className="text-primary-700 font-medium hover:underline">{t('auth.login_link')}</Link></p>
             </>
