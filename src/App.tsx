@@ -24,6 +24,7 @@ import AdminDashboard from './pages/admin/Dashboard'
 import AdminPartners from './pages/admin/Partners'
 import AdminUsers from './pages/admin/Users'
 import AdminReservations from './pages/admin/Reservations'
+import Notifications from './pages/Notifications'
 import NotFound from './pages/NotFound'
 
 export default function App() {
@@ -74,6 +75,9 @@ export default function App() {
             <Route path="partners" element={<AdminPartners />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="reservations" element={<AdminReservations />} />
+          </Route>
+          <Route path="/notifications" element={<ProtectedRoute roles={['client', 'partner', 'admin']} />}>
+            <Route index element={<Notifications />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

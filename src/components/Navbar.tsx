@@ -74,7 +74,7 @@ export default function Navbar() {
             </div>
             {user ? (
               <>
-                <Link to={dashboardLink} className="relative p-2 rounded-lg hover:bg-neutral-100 transition-colors" title={t('nav.notifications')}>
+                <Link to="/notifications" className="relative p-2 rounded-lg hover:bg-neutral-100 transition-colors" title={t('nav.notifications')}>
                   <Bell size={20} className="text-neutral-600" />
                   {unreadCount > 0 && <span className="absolute top-1 right-1 w-4 h-4 bg-error-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{unreadCount > 9 ? '9+' : unreadCount}</span>}
                 </Link>
