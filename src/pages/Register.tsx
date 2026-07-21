@@ -17,9 +17,16 @@ export default function Register() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [rateLimitWait, setRateLimitWait] = useState(0)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    
+    if (rateLimitWait > 0) {
+      setError(t('auth.error.rate_limit') || `جاهر تماما، انتظر ${rateLimitWait} ثانية`)
+      return
+    }
+
     setLoading(true)
     setError('')
     setSuccess(false)
@@ -29,7 +36,22 @@ export default function Register() {
     
     if (error) {
       console.log('[v0] Sign up error:', error)
-      setError(error.includes('already') ? t('auth.error.exists') : error)
+      
+      if (error.includes('rate limit') || error.includes('rate_limit') || error.includes('too many')) {
+        setRateLimitWait(60)
+        const interval = setInterval(() => {
+          setRateLimitWait(prev => {
+            if (prev <= 1) {
+              clearInterval(interval)
+              return 0
+            }
+            return prev - 1
+          })
+        }, 1000)
+        setError(t('auth.error.rate_limit_wait') || 'تم تجاوز حد الرسائل المسموح. يرجى الانتظار 60 ثانية قبل المحاولة مجددا')
+      } else {
+        setError(error.includes('already') ? t('auth.error.exists') : error)
+      }
     } else {
       console.log('[v0] Sign up successful, showing confirmation message')
       setSuccess(true)
